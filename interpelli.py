@@ -5,7 +5,7 @@ from pathlib import Path
 
 URL = "https://servizi.istruzionepiemonte.it/interpello2025/ric_interpello_ambito_cn.php"
 NTFY = "https://ntfy.sh/interpelli-cn-rt5c0gsxmbuy"
-KEYWORDS = ["A027", "MATEMATICA E FISICA"]  # match case-insensitive su tutta la riga
+KEYWORDS = [""]  # "" = ogni riga nuova; es. ["A027", "MATEMATICA E FISICA"], match case-insensitive su tutta la riga
 SEEN = Path(__file__).with_suffix(".seen.json")
 
 def rows(html):
