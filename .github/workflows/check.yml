@@ -1,7 +1,9 @@
 name: check
 on:
   schedule:
-    - cron: '*/30 4-19 * * *'  # UTC: 06:00-21:30 ora legale, 05:00-20:30 ora solare
+    # ogni 40 min, ore 4-19 UTC (06:00-21:20 ora legale, 05:00-20:20 solare); due righe perche' */40 in cron non attraversa l'ora
+    - cron: '0,40 4,6,8,10,12,14,16,18 * * *'
+    - cron: '20 5,7,9,11,13,15,17,19 * * *'
   workflow_dispatch:
 permissions:
   contents: write
