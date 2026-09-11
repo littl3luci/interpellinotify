@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 interpelli.py
+        env:
+          NTFY: ${{ secrets.NTFY }}
       - run: |
           git config user.name bot && git config user.email bot@users.noreply.github.com
           git add interpelli.seen.json && git diff --cached --quiet || git commit -m "seen" && git push

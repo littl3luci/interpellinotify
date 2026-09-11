@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Controlla gli interpelli CN e manda su ntfy le righe nuove che contengono una KEYWORD."""
-import json, re, urllib.request
+import json, os, re, urllib.request
 from pathlib import Path
 
 URL = "https://servizi.istruzionepiemonte.it/interpello2025/ric_interpello_ambito_cn.php"
-NTFY = "https://ntfy.sh/interpelli-cn-rt5c0gsxmbuy"
+NTFY = os.environ["NTFY"]  # secret GitHub, es. https://ntfy.sh/<topic>
 KEYWORDS = [""]  # "" = ogni riga nuova; es. ["A027", "MATEMATICA E FISICA"], match case-insensitive su tutta la riga
 SEEN = Path(__file__).with_suffix(".seen.json")
 
