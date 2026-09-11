@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Controlla gli interpelli CN e manda su ntfy le righe nuove che contengono una KEYWORD."""
-import json, os, re, urllib.request
+import base64, json, os, re, urllib.request
 from pathlib import Path
 
 URL = "https://servizi.istruzionepiemonte.it/interpello2025/ric_interpello_ambito_cn.php"
@@ -25,7 +25,7 @@ def main():
             line = " | ".join(tds[:7] + tds[8:10])
             if progr not in seen and any(k.lower() in line.lower() for k in KEYWORDS):
                 print(progr, line)
-                urllib.request.urlopen(urllib.request.Request(NTFY, data=line.encode(), headers={"Title": f"{tds[2]} — {tds[1]}", "Tags": progr, "Priority": "high"}))
+                urllib.request.urlopen(urllib.request.Request(NTFY, data=line.encode(), headers={"Title": "=?UTF-8?B?" + base64.b64encode(f"{tds[2]} - {tds[1]}".encode()).decode() + "?=", "Tags": progr, "Priority": "high"}))
     SEEN.write_text(json.dumps(sorted(cur)))
 
 if __name__ == "__main__":
