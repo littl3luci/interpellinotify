@@ -25,7 +25,7 @@ def main():
             line = " | ".join(tds[:7] + tds[8:10])
             if progr not in seen and any(k.lower() in line.lower() for k in KEYWORDS):
                 print(progr, line)
-                urllib.request.urlopen(urllib.request.Request(NTFY, data=line.encode(), headers={"Title": f"Interpello {progr}", "Priority": "high"}))
+                urllib.request.urlopen(urllib.request.Request(NTFY, data=line.encode(), headers={"Title": f"{tds[2]} — {tds[1]}", "Tags": progr, "Priority": "high"}))
     SEEN.write_text(json.dumps(sorted(cur)))
 
 if __name__ == "__main__":
