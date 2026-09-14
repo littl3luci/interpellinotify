@@ -1,6 +1,6 @@
 #!/bin/bash
 # Fa localmente il lavoro del cron GitHub (check.yml).
-#   ./local.sh         spegne il workflow su GitHub, poi ogni 10 min: pull, interpelli.py, commit+push seen
+#   ./local.sh         spegne il workflow su GitHub, poi ogni 10 min (INTERVAL=300 ./local.sh per 5): pull, interpelli.py, commit+push seen
 #   Ctrl-C             riaccende il workflow e esce
 #   ./local.sh once    un solo giro (pull, interpelli.py, commit+push seen), non tocca il workflow
 #   ./local.sh github  riaccende solo il workflow (se il loop è morto senza Ctrl-C)
@@ -20,4 +20,4 @@ export NTFY=$(cat ~/.config/interpellinotify-ntfy)
 [ "${1-}" = once ] && { run; exit; }
 gh disable || exit 1
 trap 'gh enable; exit' INT TERM HUP
-while :; do run; sleep 600; done
+while :; do run; sleep "${INTERVAL:-600}"; done
