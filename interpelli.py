@@ -18,15 +18,24 @@ def rows(html):
 
 def main():
     html = urllib.request.urlopen(URL, timeout=30).read().decode("iso-8859-1")
-    seen = set(json.loads(SEEN.read_text())) if SEEN.exists() else None
     cur = dict(rows(html))
-    if seen is not None:
+    seen = set(json.loads(SEEN.read_text())) if SEEN.exists() else set(cur)  # primo giro: nessuna notifica
+    try:
         for progr, tds in cur.items():
+            if progr in seen:
+                continue
             line = " | ".join(tds[:7] + tds[8:10])
-            if progr not in seen and any(k.lower() in line.lower() for k in KEYWORDS):
+            if any(k.lower() in line.lower() for k in KEYWORDS):
                 print(progr, line)
-                urllib.request.urlopen(urllib.request.Request(NTFY, data=line.encode(), headers={"Title": "=?UTF-8?B?" + base64.b64encode(f"{tds[2]} - {tds[1]}".encode()).decode() + "?=", "Tags": progr, "Priority": "high"}))
-    SEEN.write_text(json.dumps(sorted(cur)))
+                try:
+                    urllib.request.urlopen(urllib.request.Request(NTFY, data=line.encode(), headers={"Title": "=?UTF-8?B?" + base64.b64encode(f"{tds[2]} - {tds[1]}".encode()).decode() + "?=", "Tags": progr, "Priority": "high"}), timeout=30)
+                except OSError as e:
+                    print(progr, "ntfy fallito, riprovo al prossimo giro:", e)
+                    continue  # non segno come visto -> ritentato, mai perso
+            seen.add(progr)
+    finally:
+        # seen è solo-crescita (unione): una pagina vuota/parziale non lo azzera e non rinotifica tutto al giro dopo
+        SEEN.write_text(json.dumps(sorted(seen)))
 
 if __name__ == "__main__":
     main()

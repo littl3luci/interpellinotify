@@ -19,5 +19,5 @@ run() {
 export NTFY=$(cat ~/.config/interpellinotify-ntfy)
 [ "${1-}" = once ] && { run; exit; }
 gh disable || exit 1
-trap 'gh enable; exit' INT TERM
+trap 'gh enable; exit' INT TERM HUP
 while :; do run; sleep 600; done

@@ -3,6 +3,7 @@ on:
   schedule:
     - cron: '*/10 4-19 * * *'  # UTC: 06:00-21:30 ora legale, 05:00-20:30 ora solare
   workflow_dispatch:
+concurrency: check  # mai due run insieme (schedule + dispatch)
 permissions:
   contents: write
 jobs:
