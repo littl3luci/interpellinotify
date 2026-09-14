@@ -8,7 +8,7 @@
 set -u
 cd "$(dirname "$0")"
 API=https://api.github.com/repos/littl3luci/interpellinotify/actions/workflows/check.yml
-gh() { curl -sf -o /dev/null -X PUT -H "Authorization: Bearer $(cat ~/.config/interpellinotify-token)" "$API/$1" && echo "workflow github: $1"; }
+gh() { curl -sf -o /dev/null -X PUT -H "Authorization: Bearer $(cat ~/.config/interpellinotify-token)" "$API/$1" && echo "workflow github: $1" || { echo "workflow github: $1 FALLITO (token senza actions:write?)" >&2; return 1; }; }
 run() {
     git pull -q --rebase
     python3 interpelli.py
