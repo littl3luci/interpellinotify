@@ -1,7 +1,7 @@
 name: check
 on:
   schedule:
-    - cron: '*/30 4-19 * * *'  # UTC: 06:00-21:30 ora legale, 05:00-20:30 ora solare
+    - cron: '*/10 4-19 * * *'  # UTC: 06:00-21:30 ora legale, 05:00-20:30 ora solare
   workflow_dispatch:
 permissions:
   contents: write
